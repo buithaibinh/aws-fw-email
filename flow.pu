@@ -1,0 +1,22 @@
+@startuml
+
+participant "User" as U
+participant "Lambda Function" as L
+participant "AWS SES" as SES
+participant "AWS SNS" as SNS
+
+' When the user sends an email to a specific email address(configured in SES mail receipt rule)
+' The email will be forwarded to the SNS topic
+' A lambda function will be triggered by the SNS topic
+' The lambda function will process the email and send it to all the recipients(MAIL_TO) in the email
+
+U -> SES: Send email to email address
+SES -> SNS: Forward email to SNS topic
+SNS -> L: Trigger lambda function
+L -> L: Process email
+L -> SES: Send email to MAIL_TO
+
+
+autonumber
+
+@enduml
